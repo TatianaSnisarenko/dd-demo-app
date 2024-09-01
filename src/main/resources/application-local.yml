@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dd_demo_app_db
+    username: dd_demo_app_db
+    password: dd_demo_app_db
+
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/dd_demo_app_db
+    user: dd_demo_app_db
+    password: dd_demo_app_db
+    locations: classpath:db/migration

@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  flyway:
+    enabled: true
+    url: ${SPRING_DATASOURCE_URL}
+    user: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    locations: classpath:db/migration
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+# Swagger налаштування
+springdoc:
+  api-docs:
+    path: /api-docs
+
+# Datadog налаштування
+management:
+  datadog:
+    metrics:
+      export:
+        enabled: true
+        api-key: your_datadog_api_key
+
