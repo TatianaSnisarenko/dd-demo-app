@@ -1,15 +1,17 @@
-version: '3.8'
-
 services:
-    db:
-        image: postgres:latest
+    postgres:
+        image: postgres:14
+        container_name: postgres-db
+        restart: always
         environment:
-            POSTGRES_DB: your_database
-            POSTGRES_USER: your_username
-            POSTGRES_PASSWORD: your_password
+            POSTGRES_DB: dd_demo_app_db
+            POSTGRES_USER: dd_demo_app_db
+            POSTGRES_PASSWORD: dd_demo_app_db
         ports:
             - "5432:5432"
         volumes:
-            - ~/data/dd_demo_app_db/data:/usr/share/dd_demo_app_db/data
-            - ~/data/dd_demo_app_db/snapshots:/usr/share/dd_demo_app_db/snapshots
-            - ~/data/dd_demo_app_db/logs:/var/log/dd_demo_app_db
+            - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
+        driver: local
