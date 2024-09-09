@@ -10,7 +10,9 @@ CREATE TABLE if not exists accessory
        id BIGSERIAL PRIMARY KEY,
        name VARCHAR(100) NOT NULL,
        description TEXT,
-       category_id BIGINT,
+       category_id BIGINT NOT NULL,
+       price DOUBLE PRECISION,
+       discount DOUBLE PRECISION,
        CONSTRAINT fk_category
            FOREIGN KEY(category_id)
                REFERENCES category(id)
@@ -19,7 +21,7 @@ CREATE TABLE if not exists accessory
 CREATE TABLE if not exists accessory_attribute
 (
      id BIGSERIAL PRIMARY KEY,
-     name VARCHAR(100) NOT NULL,
+     type VARCHAR(100) NOT NULL,
      value VARCHAR(255) NOT NULL,
      accessory_id BIGINT,
      CONSTRAINT fk_accessory
