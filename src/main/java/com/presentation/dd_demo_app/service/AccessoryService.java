@@ -4,6 +4,7 @@ import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_ALL;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_ALL_LATENCY;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_BY_ATTRIBUTES;
+import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_BY_ATTRIBUTES_LATENCY;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_BY_CATEGORY;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_BY_CATEGORY_LATENCY;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ACCESSORIES_BY_ID;
@@ -77,7 +78,7 @@ public class AccessoryService {
         Set<AccessoryDto> accessories = accessoryRepository.findByAttributes_TypeAndAttributes_ValueIgnoreCase(attribute, value).stream()
                 .map(accessoryMapper::toDto)
                 .collect(Collectors.toSet());
-        meterRegistry.timer(ACCESSORIES_BY_ATTRIBUTES, ATTRIBUTE, attribute.name(), VALUE, value)
+        meterRegistry.timer(ACCESSORIES_BY_ATTRIBUTES_LATENCY, ATTRIBUTE, attribute.name(), VALUE, value)
                 .record(System.currentTimeMillis() - startTime, TimeUnit.MILLISECONDS);
         return accessories;
     }
