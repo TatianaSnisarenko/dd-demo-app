@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: dd-demo-app
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
@@ -25,5 +27,18 @@ management:
     metrics:
       export:
         enabled: ${DATADOG_ENABLED:false}
-        api-key: ${DATADOG_API_KEY:datadog_api_key}
+        api-key: ${DATADOG_API_KEY}
+        uri: https://us5.datadoghq.com
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      env: ${ENV:dev}
+
+logging:
+  level:
+    root: debug
 

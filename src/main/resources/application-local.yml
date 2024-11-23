@@ -22,3 +22,6 @@ management:
     metrics:
       export:
         enabled: false
+  metrics:
+    tags:
+      env: ${ENV:local}
