@@ -25,6 +25,7 @@ import com.presentation.dd_demo_app.repository.entity.AccessoryEntity;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -54,6 +55,7 @@ public class AccessoryService {
 
     public Set<AccessoryDto> getAll() {
         long startTime = System.currentTimeMillis();
+        delay();
         meterRegistry.counter(ACCESSORIES_ALL).increment();
         Set<AccessoryDto> accessories = accessoryRepository.findAll().stream().map(accessoryMapper::toDto).collect(Collectors.toSet());
         meterRegistry.timer(ACCESSORIES_ALL_LATENCY).record(System.currentTimeMillis() - startTime,
@@ -63,6 +65,7 @@ public class AccessoryService {
 
     public Set<AccessoryDto> getByCategory(Category category) {
         long startTime = System.currentTimeMillis();
+        delay();
         meterRegistry.counter(ACCESSORIES_BY_CATEGORY, CATEGORY, category.name()).increment();
         Set<AccessoryDto> accessories = accessoryRepository.findByCategory_Name(category).stream()
                 .map(accessoryMapper::toDto)
@@ -74,6 +77,7 @@ public class AccessoryService {
 
     public Set<AccessoryDto> getByAttributes(AccessoryAttribute attribute, String value) {
         long startTime = System.currentTimeMillis();
+        delay();
         meterRegistry.counter(ACCESSORIES_BY_ATTRIBUTES, ATTRIBUTE, attribute.name(), VALUE, value).increment();
         Set<AccessoryDto> accessories = accessoryRepository.findByAttributes_TypeAndAttributes_ValueIgnoreCase(attribute, value).stream()
                 .map(accessoryMapper::toDto)
@@ -90,5 +94,15 @@ public class AccessoryService {
         meterRegistry.timer(ACCESSORIES_SAVE, CATEGORY, accessory.getCategory().getName().name())
                 .record(System.currentTimeMillis() - startTime, TimeUnit.MILLISECONDS);
         return dto;
+    }
+
+    private void delay() {
+        try {
+            Random random = new Random();
+            int delay = random.nextInt(201);
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

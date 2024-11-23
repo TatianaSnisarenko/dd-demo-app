@@ -1,31 +1,29 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   flyway:
     enabled: true
-    url: ${SPRING_DATASOURCE_URL}
-    user: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    user: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     locations: classpath:db/migration
 
   jpa:
     hibernate:
       ddl-auto: none
 
-# Swagger налаштування
 springdoc:
   api-docs:
     path: /api-docs
 
-# Datadog налаштування
 management:
   datadog:
     metrics:
       export:
-        enabled: true
-        api-key: your_datadog_api_key
+        enabled: ${DATADOG_ENABLED:false}
+        api-key: ${DATADOG_API_KEY:datadog_api_key}
 
