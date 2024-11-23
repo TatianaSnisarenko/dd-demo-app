@@ -4,10 +4,10 @@ spring:
     username: dd_demo_app_db
     password: dd_demo_app_db
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   flyway:
     enabled: true
