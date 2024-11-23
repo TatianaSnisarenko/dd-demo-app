@@ -1,14 +1,12 @@
 package com.presentation.dd_demo_app.controller;
 
+import static com.presentation.dd_demo_app.repository.entity.metrics.MetricName.ERROR;
 import static com.presentation.dd_demo_app.repository.entity.metrics.MetricTag.TYPE;
 import static lombok.AccessLevel.PRIVATE;
-import static reactor.netty.Metrics.ERROR;
 
-import com.presentation.dd_demo_app.repository.entity.metrics.MetricName;
-import com.presentation.dd_demo_app.repository.entity.metrics.MetricTag;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.netty.handler.timeout.ReadTimeoutException;
 import jakarta.persistence.EntityNotFoundException;
+import java.net.SocketTimeoutException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,7 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex, WebRequest request) {
         log.error("Entity not found: {}", ex.getMessage());
-        meterRegistry.counter(MetricName.ERROR, TYPE, ex.getClass().getSimpleName()).increment();
+        meterRegistry.counter(ERROR, TYPE, ex.getClass().getSimpleName()).increment();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -41,8 +39,8 @@ public class ErrorHandlingControllerAdvice {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ReadTimeoutException.class)
-    public ResponseEntity<String> handleServerError(ReadTimeoutException ex, WebRequest request) {
+    @ExceptionHandler(SocketTimeoutException.class)
+    public ResponseEntity<String> handleServerError(SocketTimeoutException ex, WebRequest request) {
         log.error("Read timeout exception: {}", ex.getMessage());
         meterRegistry.counter(ERROR, TYPE, ex.getClass().getSimpleName()).increment();
         return new ResponseEntity<>("Read timeout exception occurred", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,6 +52,5 @@ public class ErrorHandlingControllerAdvice {
         meterRegistry.counter(ERROR, TYPE, ex.getClass().getSimpleName()).increment();
         return new ResponseEntity<>("An internal error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }
 

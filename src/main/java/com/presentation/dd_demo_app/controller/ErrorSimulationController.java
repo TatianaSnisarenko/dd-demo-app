@@ -3,12 +3,11 @@ package com.presentation.dd_demo_app.controller;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import io.netty.handler.timeout.ReadTimeoutException;
 import jakarta.persistence.EntityNotFoundException;
+import java.net.SocketTimeoutException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +29,8 @@ public class ErrorSimulationController {
     }
 
     @GetMapping("/read-timeout")
-    public ResponseEntity<String> simulateReadTimeout() {
-        throw new ReadTimeoutException("Read timeout exception");
+    public ResponseEntity<String> simulateReadTimeout() throws SocketTimeoutException {
+        throw new SocketTimeoutException("Read timeout exception");
     }
 
     @GetMapping("/server-error")
