@@ -37,8 +37,16 @@ management:
     tags:
       application: ${spring.application.name}
       env: ${ENV:dev}
+      service: ${spring.application.name}
+      version: ${VERSION:0.0.1}
 
 logging:
+  structured:
+    format:
+      file: ecs
+      console: ecs
+  file:
+    name: /var/log/dd-demo-app.log
   level:
-    root: debug
+    root: INFO
 
